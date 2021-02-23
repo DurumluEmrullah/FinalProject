@@ -11,6 +11,38 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //DTO : Data Transformation Object
+            // ProductTest();
+
+            // CategoryTest();
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            var result = productManager.GetProductDetails();
+            if (result.Success)
+            {
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine(product.ProductName + " \\ " + product.CategoryName);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+           
+
+        }
+
+        private static void CategoryTest()
+        {
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+            foreach (var category in categoryManager.GetAll())
+            {
+                Console.WriteLine(category.CategoryName);
+            }
+        }
+
+        private static void ProductTest()
+        {
             ProductManager productManager = new ProductManager(new EfProductDal());
             string operations = "Ürünleri Görüntülemek için 1\n" +
                              "Yeni ürün eklemk için 2\n" +
@@ -24,11 +56,11 @@ namespace ConsoleUI
                 Console.WriteLine("\n*********************************** \n");
                 Console.WriteLine(operations);
                 Console.WriteLine("\n*********************************** \n");
-                seletctedOperation =int.Parse (Console.ReadLine());
+                seletctedOperation = int.Parse(Console.ReadLine());
 
-                if(seletctedOperation == 1)
+                if (seletctedOperation == 1)
                 {
-                    products = productManager.GetAll();
+                    products = productManager.GetAll().Data;
                     foreach (var product in products)
                     {
 
@@ -36,7 +68,7 @@ namespace ConsoleUI
                     }
 
                 }
-                else if(seletctedOperation == 2)
+                else if (seletctedOperation == 2)
                 {
 
                 }
@@ -44,11 +76,12 @@ namespace ConsoleUI
                 {
 
                 }
-                else if(seletctedOperation == 4)
+                else if (seletctedOperation == 4)
                 {
 
                 }
-                else if(seletctedOperation ==0){
+                else if (seletctedOperation == 0)
+                {
                     Console.WriteLine("Programdan çıkılıyor ....");
                     break;
                 }

@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,59 +11,20 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : IProductDal
+    public class EfProductDal : EfEntityRepositoryBase<Product, NortwindContext>, IProductDal
     {
-        public void Add(Product product)
-        {
-            //IDisposable pattern implementation of c#
-            using (NortwindContext context = new NortwindContext())
-            {
-                var addedEntity = context.Entry(product);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(Product product)
+        public List<ProductDetailDto> GetProductDetails()
         {
             using (NortwindContext context = new NortwindContext())
             {
-                var deletedEntity = context.Entry(product);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
+                var result = from p in context.Products
+                             join c in context.Categories
+                             on p.CategoryId equals c.CategoryId
+                             select new ProductDetailDto {ProductId =p.ProductId,ProductName=p.ProductName,CategoryName=c.CategoryName,UnitsInStock=p.UnitsInStock };
+                return result.ToList();
             }
-        }
+            
 
-        public Product Get(Expression<Func<Product, bool>> filter)
-        {
-            using (NortwindContext context = new NortwindContext())
-            {
-                return context.Set<Product>().SingleOrDefault(filter);
-            }
-        }
-
-  
-
-        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
-        {
-            using (NortwindContext context = new NortwindContext())
-            {
-                  return filter == null 
-                    ? context.Set<Product>().ToList() 
-                    : context.Set<Product>().Where(filter).ToList();
-                
-            }
-        }
-
-
-        public void Update(Product product)
-        {
-            using (NortwindContext context = new NortwindContext())
-            {
-                var updatedEntity = context.Entry(product);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
         }
     }
 }
