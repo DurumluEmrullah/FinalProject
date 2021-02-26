@@ -16,7 +16,7 @@ namespace Core.Aspects.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new System.Exception("Bu bir doğrulama değildi");  
+                throw new System.Exception("Bu bir doğrulama değildir");  
             }
 
             _validatorType = validatorType;

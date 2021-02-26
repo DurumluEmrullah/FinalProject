@@ -9,7 +9,7 @@ namespace Core.CrossCuttingConcerns.Validation
     {
         public static void Validate(IValidator validator,object entity )
         {
-            var contex = new ValidationContext<Object>(entity);
+            var contex = new ValidationContext<object>(entity);
             var result = validator.Validate(contex);
             if (!result.IsValid)
             {
