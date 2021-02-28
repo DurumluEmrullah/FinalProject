@@ -4,6 +4,7 @@ using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ConsoleUI
 {
@@ -11,6 +12,8 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+
+           
             //DTO : Data Transformation Object
             // ProductTest();
 
